@@ -10,6 +10,36 @@ upbnd = raw_input()
 print ("Enter lowerbound of integration")
 lwbnd = raw_input()
 
-print (dx)
+#Simpsons Method
+
+
+
+
+
+
+#Trapazoidal Rule
+def traprule (function, dx, upbnd, lwbnd):
+	range = (upbnd - lwbnd)
+	n = range / dx
+	h = (range)/n
+
+
+#Function Evaluation
+def Function_Evaluation (function):
+
+	listyMclistFace = []
+	leng_function = function.length
+	for x in function (0,leng_function):
+		theChar = 
+		listyMclistFace.append(x)
+	
+
+
+
+
+
+
+
+
 
 
