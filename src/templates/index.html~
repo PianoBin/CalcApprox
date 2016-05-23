@@ -1,0 +1,12 @@
+<html>
+	<head>
+		<title>Calc Approximation Webpage</title>
+	</head>
+	<body>
+		<h1>Form</h1>
+
+		<form action="/hello" method="POST">
+			
+		</form>
+	</body>
+</html>
