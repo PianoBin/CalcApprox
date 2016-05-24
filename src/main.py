@@ -25,6 +25,21 @@ Graph
 Compare Error b/t Simpson's & Trapezoidal
 '''
 
+'''
+ _____       _       ___                             
+/  __ \     | |     / _ \                            
+| /  \/ __ _| | ___/ /_\ \_ __  _ __  _ __ _____  __ 
+| |    / _` | |/ __|  _  | '_ \| '_ \| '__/ _ \ \/ / 
+| \__/\ (_| | | (__| | | | |_) | |_) | | | (_) >  <  
+ \____/\__,_|_|\___\_| |_/ .__/| .__/|_|  \___/_/\_\ 
+                         | |   | |                   
+                         |_|   |_|                   
+Made by Steini(@SteiniDavid) and Shoji(@PianoBin)
+'''
+import numpy as nump
+import matplotlib.pyplot as plt
+import matplotlib.animation as anim
+
 print ("Integrates the following function in two ways.")
 prompt1 = "Enter Function: "
 function = input(prompt1)
