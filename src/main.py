@@ -39,6 +39,7 @@ Made by Steini(@SteiniDavid) and Shoji(@PianoBin)
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
+#from sympy import integrals
 
 #INPUT
 print ("Integrates the following function in two ways.")
