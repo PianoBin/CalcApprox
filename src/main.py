@@ -36,70 +36,75 @@ Compare Error b/t Simpson's & Trapezoidal
                          |_|   |_|                   
 Made by Steini(@SteiniDavid) and Shoji(@PianoBin)
 '''
-import numpy as nump
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 
 #INPUT
 print ("Integrates the following function in two ways.")
 prompt1 = "Enter Function: "
-function = input(prompt1)
+function = input(prompt1) #remain as String
 prompt2 = ("Enter dx: ")
-dx = input(prompt2)
+dx = float(input(prompt2))
 prompt3 = ("Enter upperbound of integration: ")
-upbnd = input(prompt3)
+upbnd = int(input(prompt3))
 prompt4 = ("Enter lowerbound of integration: ")
-lwbnd = input(prompt4)
+lwbnd = int(input(prompt4))
 
 #Simpson's Rule
 def simpRule (function, dx, upbnd, lwbnd):
-	range = upbnd - lwbnd
-	n = range / dx
-	h = range / n
+	theRange = upbnd - lwbnd
+	n = theRange / dx
+	h = theRange / n
 
 	listy = []
 	listy = function.split()
 
-	sum = 0
+	theSum = 0
+	counter = 0
 	tempListy = []	
-	for num in range(lwbnd, upbnd, dx):
+	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
+	for num in check:
 	    tempListy = FindX(listy, num) #change the list, replace x with num
 	    y = Solve(tempListy) #parse the function and solve now we have dx	
 	    if counter == 0 or counter == n:
-		    sum += y
+		    theSum += y
 	    elif counter % 2 == 1:
-		    sum += 4 * y #multiply by 4
+		    theSum += 4 * y #multiply by 4
 	    else:
-		    sum += 2 * y #multiply by 2
-	counter += 1
+		    theSum += 2 * y #multiply by 2
+	    counter += 1
 	coeff = h / 3
-	sum *= coeff
+	theSum *= coeff
 
-
+	print ("Simpson's Rule Sum: " + str(theSum))
 
 #Trapezoidal Rule
 def trapRule (function, dx, upbnd, lwbnd):
-	range = (upbnd - lwbnd)
-	n = range / dx #number of subintervals
-	h = range/n 
+	theRange = (upbnd - lwbnd)
+	n = theRange / dx #number of subintervals
+	h = theRange/n 
 	
 	#deleted Function_Evaluation, moved to here
 	listy = []
 	listy = function.split()
 
-	sum = 0
+	theSum = 0
 	counter = 0
 	tempListy = [] #do not modify the original listy while looping
-	for num in range(lwbnd, upbnd, dx):
+	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
+	for num in check:
 		tempListy = FindX(listy, num) #change the list, replace x with num
 		y = Solve(tempListy) #parse the function and solve now we have dx	
 		if counter == 0 or counter == n:
-			sum += y
+			theSum += y
 		else:
-			sum += 2 * y #multiply by 2
+			theSum += 2 * y #multiply by 2
 		counter += 1
 	coeff = h / 2
-	sum *= coeff
+	theSum *= coeff
+	
+	print ("Trapezoidal Rule Sum: " + str(theSum))
 
 def FindX (listy, xitdx) : #Change the x to given number, modified listy 
 	for val in listy:
@@ -153,4 +158,7 @@ def Solve (listy): #Find y
 
 					listy.append(sum)
 
-def graph:
+
+
+simpRule(function, dx, upbnd, lwbnd)
+trapRule(function, dx, upbnd, lwbnd)
