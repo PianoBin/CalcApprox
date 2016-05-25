@@ -19,8 +19,8 @@ This program will run two approximations for definite integrals:
 INPUT (DONE)
 Simpson's Rule
 Trapezoidal Rule
-FindX (DONE)
-Solve
+FindX (DONE-UNTESTED)
+Solve (DONE-UNTESTED)
 Graph
 Compare Error b/t Simpson's & Trapezoidal
 '''
@@ -94,9 +94,9 @@ def Solve (listy): #Find y
 	sum = 0
 	operations1 = {"^", "*", "-"} #* and / carry equal weight, as well as - and +
 	operations2 = {"^", "/", "+"}
-	for ops in range(3) #order of operations
+	for ops in range(3): #order of operations
 		for part in listy: #parse through listy
-			if  listy[part].equals(operations1[ops]) || listy[part].equals(operations2[ops]): 
+			if  listy[part].equals(operations1[ops]) or listy[part].equals(operations2[ops]): 
 				num1 = listy[part - 1] #2 numbers to operate on
 				num2 = listy[part + 1]
 
@@ -116,6 +116,22 @@ def Solve (listy): #Find y
 					listy.append(sum)
 				elif listy[part].equals("/"): #division
 					sum += num1 / num2
-				elif listy[part].equals("-"): #subtraction
+					del listy[part + 1]
+					del listy[part]
+					del listy[part - 1]
 
-				elif listy[part].equals("+"): #addition
+					listy.append(sum)	
+				elif listy[part].equals("-"): #subtraction
+					sum += num1 - num2
+					del listy[part + 1]
+					del listy[part]
+					del listy[part - 1]
+
+					listy.append(sum)
+				else: #addition
+					sum += num1 + num2
+					del listy[part + 1]
+					del listy[part]
+					del listy[part - 1]
+
+					listy.append(sum)
