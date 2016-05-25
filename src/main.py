@@ -40,6 +40,7 @@ import numpy as nump
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 
+#INPUT
 print ("Integrates the following function in two ways.")
 prompt1 = "Enter Function: "
 function = input(prompt1)
@@ -90,19 +91,31 @@ def FindX (listy, xitdx) : #Change the x to given number, modified listy
 	return listy
 
 def Solve (listy): #Find y
-	counter = 0
-	
-	if  listy[counter].equals("+"): #addition symbol
-				
-	elif listy[counter].equals("-"): #subtraction
-	
-	elif listy[counter].equals("*"): #multiplication
+	sum = 0
+	operations1 = {"^", "*", "-"} #* and / carry equal weight, as well as - and +
+	operations2 = {"^", "/", "+"}
+	for ops in range(3) #order of operations
+		for part in listy: #parse through listy
+			if  listy[part].equals(operations1[ops]) || listy[part].equals(operations2[ops]): 
+				num1 = listy[part - 1] #2 numbers to operate on
+				num2 = listy[part + 1]
 
-	elif listy[counter].equals("/"): #division
+				if listy[part].equals("^"): #power
+					sum += math.pow(num1, num2)
+					del listy[part + 1] #delete three items and replace with sum
+					del listy[part]
+					del listy[part - 1]
 
-	elif  listy[counter].equals("^"): #power
-	
-	else : #Just a number
+					listy.append(sum)
+				elif listy[part].equals("*"): #multiplication
+					sum += num1 * num2
+					del listy[part + 1]
+					del listy[part]
+					del listy[part - 1]
 
+					listy.append(sum)
+				elif listy[part].equals("/"): #division
+					sum += num1 / num2
+				elif listy[part].equals("-"): #subtraction
 
-	counter++
+				elif listy[part].equals("+"): #addition
