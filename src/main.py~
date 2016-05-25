@@ -17,10 +17,10 @@ This program will run two approximations for definite integrals:
 #CHECKLIST:
 '''
 INPUT (DONE)
-Simpson's Rule
-Trapezoidal Rule
-FindX (DONE)
-Solve
+Simpson's Rule (DONE-UNTESTED)
+Trapezoidal Rule (DONE-UNTESTED)
+FindX (DONE-UNTESTED)
+Solve (DONE-UNTESTED)
 Graph
 Compare Error b/t Simpson's & Trapezoidal
 '''
@@ -63,8 +63,17 @@ def simpRule (function, dx, upbnd, lwbnd):
 	sum = 0
 	tempListy = []	
 	for num in range(lwbnd, upbnd, dx):
-		tempListy = FindX(listy, num) #change the list, replace x with num
-		sum += Solve(tempListy) #parse the function and solve now we have dx	
+	    tempListy = FindX(listy, num) #change the list, replace x with num
+	    y = Solve(tempListy) #parse the function and solve now we have dx	
+	    if counter == 0 or counter == n:
+		    sum += y
+	    elif counter % 2 == 1:
+		    sum += 4 * y #multiply by 4
+	    else:
+		    sum += 2 * y #multiply by 2
+	counter += 1
+	coeff = h / 3
+	sum *= coeff
 
 
 
@@ -79,10 +88,18 @@ def trapRule (function, dx, upbnd, lwbnd):
 	listy = function.split()
 
 	sum = 0
+	counter = 0
 	tempListy = [] #do not modify the original listy while looping
 	for num in range(lwbnd, upbnd, dx):
 		tempListy = FindX(listy, num) #change the list, replace x with num
-		sum += Solve(tempListy) #parse the function and solve now we have dx	
+		y = Solve(tempListy) #parse the function and solve now we have dx	
+		if counter == 0 or counter == n:
+			sum += y
+		else:
+			sum += 2 * y #multiply by 2
+		counter += 1
+	coeff = h / 2
+	sum *= coeff
 
 def FindX (listy, xitdx) : #Change the x to given number, modified listy 
 	for val in listy:
@@ -135,3 +152,5 @@ def Solve (listy): #Find y
 					del listy[part - 1]
 
 					listy.append(sum)
+
+def graph:
