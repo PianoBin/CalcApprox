@@ -61,15 +61,17 @@ def simpRule (function, dx, upbnd, lwbnd):
 	n = theRange / dx
 	h = theRange / n
 
-	listy = []
-	listy = function.split()
+	#deleted Function_Evaluation, moved to here
+	listy = list(function)
 
 	theSum = 0
 	counter = 0
 	tempListy = []	
 	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
-	for num in check:
-	    tempListy = FindX(listy, num) #change the list, replace x with num
+	check = check.tolist() #change to list
+	check.append(upbnd) #add high end
+	for num in range(len(check)):
+	    tempListy = FindX(listy, check[num]) #change the list, replace x with num
 	    y = Solve(tempListy) #parse the function and solve now we have dx	
 	    if counter == 0 or counter == n:
 		    theSum += y
@@ -90,8 +92,7 @@ def trapRule (function, dx, upbnd, lwbnd):
 	h = theRange/n 
 	
 	#deleted Function_Evaluation, moved to here
-	listy = []
-	listy = function.split()
+	listy = list(function)
 
 	#TESTINGTESTINGTESTING
 	print (listy)
@@ -100,12 +101,14 @@ def trapRule (function, dx, upbnd, lwbnd):
 	counter = 0
 	tempListy = [] #do not modify the original listy while looping
 	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
-
+	check = check.tolist() #change to list
+	check.append(upbnd) #add high end num
 	#TESTINGTESTINGTESTING
 	print (check)
 
-	for num in check:
-		tempListy = FindX(listy, num) #change the list, replace x with num
+	for num in range(len(check)):
+		print ("num " + str(num))
+		tempListy = FindX(listy, check[num]) #change the list, replace x with num
 		#TESTINGTESTINGTESTING
 		print (tempListy)
 
@@ -121,23 +124,24 @@ def trapRule (function, dx, upbnd, lwbnd):
 	print ("Trapezoidal Rule Sum: " + str(theSum))
 
 def FindX (listy, xitdx) : #Change the x to given number, modified listy
+	print (str(xitdx))
 	leng = len(listy)
 	for val in range(leng):
 		if listy[val] == "x":
 			if val == 0: #at beginning
-				if listy[val + 1] == ("+") or listy[val + 1] == ("-") or listy[val + 1] == ("^") or listy[val + 1] == ("*") or listy[val + 1] == ("/"): 
+				if listy[val + 1] == "+" or listy[val + 1] == "-" or listy[val + 1] == "^" or listy[val + 1] == "*" or listy[val + 1] == "/": 
 					listy[val] = xitdx #Just replace with new value
 				else:
 					listy.insert(val + 1, "*") #manually insert sign
 					listy[val] = xitdx
-			elif val == len(listy): #at end
-				if listy[val - 1] == ("+") or listy[val - 1] == ("-") or listy[val - 1] == ("^") or listy[val - 1] == ("*") or listy[val - 1] == ("/"): 
+			elif val == leng: #at end
+				if listy[val - 1] == "+" or listy[val - 1] == "-" or listy[val - 1] == "^" or listy[val - 1] == "*" or listy[val - 1] == "/": 
 					listy[val] = xitdx
 				else:
 					listy.insert(val, "*")
 					listy[val + 1] = xitdx
 			else: #somewhere in the middle
-				if listy[val - 1] == ("0") or listy[val - 1] == ("1") or listy[val - 1] == ("2") or listy[val - 1] == ("3") or listy[val - 1] == ("4") or listy[val - 1] == ("5") or listy[val - 1] == ("6") or listy[val - 1] == ("7") or listy[val - 1] == ("8") or listy[val - 1] == ("9"):
+				if listy[val - 1] == "0" or listy[val - 1] == "1" or listy[val - 1] == "2" or listy[val - 1] == "3" or listy[val - 1] == "4" or listy[val - 1] == "5" or listy[val - 1] == "6" or listy[val - 1] == "7" or listy[val - 1] == "8" or listy[val - 1] == "9":
 					listy.insert(val, "*")
 					listy[val + 1] = xitdx
 	return listy
@@ -147,47 +151,57 @@ def Solve (listy): #Find y
 	leng = len(listy)
 	operations1 = ["^", "*", "-"] #* and / carry equal weight, as well as - and +
 	operations2 = ["^", "/", "+"]
-	for ops in range(3): #order of operations
+	lengOps = len(operations1)
+	for ops in range(lengOps): #order of operations
+		#TESTINGTESTINGTESTING
+		#print ("ops " + str(ops))
 		for part in range(leng): #parse through listy
+			#TESTINGTESTINGTESTING
+			#print ("leng " + str(leng))
+			#print ("part " + str(part))
 			if  listy[part] == (operations1[ops]) or listy[part] == (operations2[ops]): 
-				num1 = listy[part - 1] #2 numbers to operate on
-				num2 = listy[part + 1]
+				num1 = int(listy[part - 1]) #2 numbers to operate on
+				num2 = int(listy[part + 1])
 
 				if listy[part] == ("^"): #power
 					sum += math.pow(num1, num2)
-					del listy[part + 1] #delete three items and replace with sum
-					del listy[part]
-					del listy[part - 1]
+					listy.pop(part + 1) #delete three items and replace with sum
+					listy.pop(part)
+					listy.pop(part - 1)
 
-					listy.append(sum)
+					listy.insert(part - 1, sum)
+
 				elif listy[part] == ("*"): #multiplication
 					sum += num1 * num2
-					del listy[part + 1]
-					del listy[part]
-					del listy[part - 1]
+					listy.pop(part + 1) #delete three items and replace with sum
+					listy.pop(part)
+					listy.pop(part - 1)
 
-					listy.append(sum)
+					listy.insert(part - 1, sum)
 				elif listy[part] == ("/"): #division
 					sum += num1 / num2
-					del listy[part + 1]
-					del listy[part]
-					del listy[part - 1]
+					listy.pop(part + 1) #delete three items and replace with sum
+					listy.pop(part)
+					listy.pop(part - 1)
 
-					listy.append(sum)	
+					listy.insert(part - 1, sum)
 				elif listy[part] == ("-"): #subtraction
 					sum += num1 - num2
-					del listy[part + 1]
-					del listy[part]
-					del listy[part - 1]
+					listy.pop(part + 1) #delete three items and replace with sum
+					listy.pop(part)
+					listy.pop(part - 1)
 
-					listy.append(sum)
+					listy.insert(part - 1, sum)
 				else: #addition
 					sum += num1 + num2
-					del listy[part + 1]
-					del listy[part]
-					del listy[part - 1]
+					listy.pop(part + 1) #delete three items and replace with sum
+					listy.pop(part)
+					listy.pop(part - 1)
 
-					listy.append(sum)
+					listy.insert(part - 1, sum)
+			leng = len(listy) #AHA! List length was changing, needed to update leng
+			part = 0 #full reset
+			ops = 0
 	return sum
 
 
