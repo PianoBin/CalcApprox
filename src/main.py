@@ -35,7 +35,8 @@ Compare Error b/t Simpson's & Trapezoidal
 | \__/\ (_| | | (__| | | | |_) | |_) | | | (_) >  <  
  \____/\__,_|_|\___\_| |_/ .__/| .__/|_|  \___/_/\_\ 
                          | |   | |                   
-                         |_|   |_|                   
+                         |_|   |_|   
+                         
 Made by Steini(@SteiniDavid) and Shoji(@PianoBin)
 '''
 import numpy as np
