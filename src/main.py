@@ -49,10 +49,10 @@ prompt1 = "Enter Function: "
 function = input(prompt1) #remain as String
 prompt2 = ("Enter dx: ")
 dx = float(input(prompt2))
-prompt3 = ("Enter upperbound of integration: ")
-upbnd = int(input(prompt3))
 prompt4 = ("Enter lowerbound of integration: ")
 lwbnd = int(input(prompt4))
+prompt3 = ("Enter upperbound of integration: ")
+upbnd = int(input(prompt3))
 
 #Simpson's Rule
 def simpRule (function, dx, upbnd, lwbnd):
@@ -115,7 +115,8 @@ def trapRule (function, dx, upbnd, lwbnd):
 	
 	print ("Trapezoidal Rule Sum: " + str(theSum))
 
-def FindX (listy, xitdx) : #Change the x to given number, modified listy 
+def FindX (listy, xitdx) : #Change the x to given number, modified listy
+	int(val)
 	for val in listy:
 		if listy[val].equals("x"):
 			if val == 0: #at beginning
