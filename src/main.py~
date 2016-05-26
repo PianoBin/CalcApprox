@@ -1,5 +1,6 @@
 #FYI, raw_input was renamed to input in Python 3. That's a conflict between our versions.
 #The current implementation of the for loop in trapezoidal and simpson's is incorrect, does not reflect formula. Will fix.
+#I think the problem is due to decimal points
 
 #INFO:
 '''
@@ -90,12 +91,18 @@ def trapRule (function, dx, upbnd, lwbnd):
 	listy = []
 	listy = function.split()
 
+	#TESTINGTESTINGTESTING
+	print (*listy)
+
 	theSum = 0
 	counter = 0
 	tempListy = [] #do not modify the original listy while looping
 	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
 	for num in check:
 		tempListy = FindX(listy, num) #change the list, replace x with num
+		#TESTINGTESTINGTESTING
+		print (*tempListy)
+
 		y = Solve(tempListy) #parse the function and solve now we have dx	
 		if counter == 0 or counter == n:
 			theSum += y
@@ -110,7 +117,22 @@ def trapRule (function, dx, upbnd, lwbnd):
 def FindX (listy, xitdx) : #Change the x to given number, modified listy 
 	for val in listy:
 		if listy[val].equals("x"):
-			listy[val] = xitdx
+			if val == 0: #at beginning
+				if listy[val + 1].equals("+") or listy[val + 1].equals("-") or listy[val + 1].equals("^") or listy[val + 1].equals("*") or listy[val + 1].equals("/"): 
+					listy[val] = xitdx #Just replace with new value
+				else:
+					listy.insert(val + 1, "*") #manually insert sign
+					listy[val] = xitdx
+			elif val == len(listy): #at end
+				if listy[val - 1].equals("+") or listy[val - 1].equals("-") or listy[val - 1].equals("^") or listy[val - 1].equals("*") or listy[val - 1].equals("/"): 
+					listy[val] = xitdx
+				else:
+					listy.insert(val, "*")
+					listy[val + 1] = xitdx
+			else: #somewhere in the middle
+				if listy[val - 1].equals("0") or listy[val - 1].equals("1") or listy[val - 1].equals("2") or listy[val - 1].equals("3") or listy[val - 1].equals("4") or listy[val - 1].equals("5") or listy[val - 1].equals("6") or listy[val - 1].equals("7") or listy[val - 1].equals("8") or listy[val - 1].equals("9"):
+					listy.insert(val, "*")
+					listy[val + 1] = xitdx
 	return listy
 
 def Solve (listy): #Find y
