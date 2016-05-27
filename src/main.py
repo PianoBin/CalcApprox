@@ -60,8 +60,6 @@ upbnd = int(input(prompt3))
 def simpRule (function, dx, upbnd, lwbnd):
 	theRange = upbnd - lwbnd
 	n = theRange / dx
-	h = theRange / n
-
 	#deleted Function_Evaluation, moved to here
 	listy = list(function)
 
@@ -78,11 +76,11 @@ def simpRule (function, dx, upbnd, lwbnd):
 	    if counter == 0 or counter == n:
 	    	    theSum += y
 	    elif counter % 2 == 1:
-	 	    theSum += 4 * y #multiply by 4
+	 	    theSum += (4 * y) #multiply by 4
 	    else:
-		    theSum += 2 * y #multiply by 2
+		    theSum += (2 * y) #multiply by 2
 	    counter += 1
-	coeff = h / 3
+	coeff = dx / 3
 	theSum *= coeff
 
 	print ("Simpson's Rule Sum: " + str(theSum))
@@ -91,13 +89,12 @@ def simpRule (function, dx, upbnd, lwbnd):
 def trapRule (function, dx, upbnd, lwbnd):
 	theRange = (upbnd - lwbnd)
 	n = theRange / dx #number of subintervals
-	h = theRange/n 
-	
+
 	#deleted Function_Evaluation, moved to here
 	listy = list(function)
 	
 	#TESTINGTESTINGTESTING
-	print (listy)
+	#print (listy)
 
 	theSum = 0
 	counter = 0
@@ -106,34 +103,34 @@ def trapRule (function, dx, upbnd, lwbnd):
 	check = check.tolist() #change to list
 	check.append(upbnd) #add high end num
 	#TESTINGTESTINGTESTING
-	print (check)
+	#print (check)
 
 	for num in range(len(check)):
-		print ("num " + str(num))
+		#print ("num " + str(num))
 		#DO NOT EVER CHANGE LISTY
 		listyKEEP = list(listy)
-		print (listyKEEP)
-		print ("LISTY ABOVE")
+		#print (listyKEEP)
+		#print ("LISTY ABOVE")
 		tempListy = FindX(listyKEEP, check[num]) #change the list, replace x with num
 		#TESTINGTESTINGTESTING
-		print (listy)
-		print ("-----")
-		print (tempListy)
+		#print (listy)
+		#print ("-----")
+		#print (tempListy)
 
 		y = Solve(tempListy) #parse the function and solve now we have dx
-		print ("y = " + str(y))
+		#print ("y = " + str(y))
 		if counter == 0 or counter == n:
 			theSum += y
 		else:
-			theSum += 2 * y #multiply by 2
+			theSum += (2 * y) #multiply by 2
 		counter += 1
-	coeff = h / 2
+	coeff = dx / 2
 	theSum *= coeff
 	
 	print ("Trapezoidal Rule Sum: " + str(theSum))
 
 def FindX (listy2, xitdx) : #Change the x to given number, modified listy
-	print (str(xitdx))
+	#print (str(xitdx))
 	leng = len(listy2)
 	for val in range(leng):
 		if listy2[val] == "x":
@@ -161,19 +158,25 @@ def Solve (listy3): #Find y
 	operations1 = ["^", "*", "-"] #* and / carry equal weight, as well as - and +
 	operations2 = ["^", "/", "+"]
 	lengOps = len(operations1)
-	for ops in range(lengOps): #order of operations
+	#WE NEED TO MAKE THESE WHILE LOOPS
+	ops = 0
+	part = 0
+	while ops < lengOps:
+	#for ops in range(lengOps): #order of operations
 		#TESTINGTESTINGTESTING
-		#print ("ops " + str(ops))
-		for part in range(leng): #parse through listy3
+		##print ("ops " + str(ops))
+		#WE NEED TO MAKE THESE WHILE LOOPS
+		while part < leng:
+		#for part in range(leng): #parse through listy3
 			#TESTINGTESTINGTESTING
-			print ("leng " + str(leng))
-			print ("part " + str(part))
+			#print ("leng " + str(leng))
+			#print ("part " + str(part))
 			if  listy3[part] == (operations1[ops]) or listy3[part] == (operations2[ops]): 
 				num1 = int(listy3[part - 1]) #2 numbers to operate on
 				num2 = int(listy3[part + 1])
 
 				if listy3[part] == ("^"): #power
-					sum += math.pow(num1, num2)
+					sum = math.pow(num1, num2)
 					listy3.pop(part + 1) #delete three items and replace with sum
 					listy3.pop(part)
 					listy3.pop(part - 1)
@@ -181,28 +184,28 @@ def Solve (listy3): #Find y
 					listy3.insert(part - 1, sum)
 
 				elif listy3[part] == ("*"): #multiplication
-					sum += num1 * num2
+					sum = num1 * num2
 					listy3.pop(part + 1) #delete three items and replace with sum
 					listy3.pop(part)
 					listy3.pop(part - 1)
 
 					listy3.insert(part - 1, sum)
 				elif listy3[part] == ("/"): #division
-					sum += num1 / num2
+					sum = num1 / num2
 					listy3.pop(part + 1) #delete three items and replace with sum
 					listy3.pop(part)
 					listy3.pop(part - 1)
 
 					listy3.insert(part - 1, sum)
 				elif listy3[part] == ("-"): #subtraction
-					sum += num1 - num2
+					sum = num1 - num2
 					listy3.pop(part + 1) #delete three items and replace with sum
 					listy3.pop(part)
 					listy3.pop(part - 1)
 
 					listy3.insert(part - 1, sum)
 				else: #addition
-					sum += num1 + num2
+					sum = num1 + num2
 					listy3.pop(part + 1) #delete three items and replace with sum
 					listy3.pop(part)
 					listy3.pop(part - 1)
@@ -211,7 +214,10 @@ def Solve (listy3): #Find y
 				leng = len(listy3) #AHA! List length was changing, needed to update leng
 				part = 0 #full reset
 				ops = 0
+			part += 1
 			print (listy3)
+		ops += 1
+		part = 0
 	return sum
 
 
