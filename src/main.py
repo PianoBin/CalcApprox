@@ -43,6 +43,7 @@ Made by Steini(@SteiniDavid) and Shoji(@PianoBin)
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
+import math
 #from sympy import integrals
 
 #INPUT
@@ -131,9 +132,11 @@ def trapRule (function, dx, upbnd, lwbnd):
 
 def FindX (listy2, xitdx) : #Change the x to given number, modified listy
 	#print (str(xitdx))
+	test = float(xitdx)
 	leng = len(listy2)
 	for val in range(leng):
 		if listy2[val] == "x":
+			xitdx = float(test)
 			if val == 0: #at beginning
 				if listy2[val + 1] == "+" or listy2[val + 1] == "-" or listy2[val + 1] == "^" or listy2[val + 1] == "*" or listy2[val + 1] == "/": 
 					listy2[val] = xitdx #Just replace with new value
@@ -219,6 +222,8 @@ def Solve (listy3): #Find y
 		ops += 1
 		part = 0
 	return sum
+
+#def greaterThan9 (listy4): #any numbers greater than 9, collapse together
 
 
 

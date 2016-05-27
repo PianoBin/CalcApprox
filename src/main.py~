@@ -43,6 +43,7 @@ Made by Steini(@SteiniDavid) and Shoji(@PianoBin)
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
+import math
 #from sympy import integrals
 
 #INPUT
@@ -215,10 +216,12 @@ def Solve (listy3): #Find y
 				part = 0 #full reset
 				ops = 0
 			part += 1
-			print (listy3)
+			#print (listy3)
 		ops += 1
 		part = 0
 	return sum
+
+#def greaterThan9 (listy4): #any numbers greater than 9, collapse together
 
 
 
