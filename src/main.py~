@@ -2,6 +2,7 @@
 #The current implementation of the for loop in trapezoidal and simpson's is incorrect, does not reflect formula. Will fix.
 #I think the problem is due to decimal points
 #found the index prob....also we need to change all my .equals to ==
+#Still need to add functions to fix decimal numbers and multi-digit numbers
 
 #INFO:
 '''
@@ -22,7 +23,7 @@ INPUT (DONE)
 Simpson's Rule (DONE-STILL TESTING)
 Trapezoidal Rule (DONE-STILL TESTING)
 FindX (DONE)
-Solve (DONE-STILL TESTING)
+Solve (NOT WORKING-STILL TESTING)
 Graph
 Compare Error b/t Simpson's & Trapezoidal & original
 '''
@@ -165,8 +166,8 @@ def Solve (listy3): #Find y
 		#print ("ops " + str(ops))
 		for part in range(leng): #parse through listy3
 			#TESTINGTESTINGTESTING
-			#print ("leng " + str(leng))
-			#print ("part " + str(part))
+			print ("leng " + str(leng))
+			print ("part " + str(part))
 			if  listy3[part] == (operations1[ops]) or listy3[part] == (operations2[ops]): 
 				num1 = int(listy3[part - 1]) #2 numbers to operate on
 				num2 = int(listy3[part + 1])
@@ -207,9 +208,10 @@ def Solve (listy3): #Find y
 					listy3.pop(part - 1)
 
 					listy3.insert(part - 1, sum)
-			leng = len(listy3) #AHA! List length was changing, needed to update leng
-			part = 0 #full reset
-			ops = 0
+				leng = len(listy3) #AHA! List length was changing, needed to update leng
+				part = 0 #full reset
+				ops = 0
+			print (listy3)
 	return sum
 
 
