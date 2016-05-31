@@ -3,6 +3,7 @@
 #I think the problem is due to decimal points
 #found the index prob....also we need to change all my .equals to ==
 #Still need to add functions to fix decimal numbers and multi-digit numbers
+#need to fix for multiple x's in func
 
 #INFO:
 '''
@@ -22,7 +23,7 @@ This program will run two approximations for definite integrals:
 INPUT (DONE)
 Simpson's Rule (DONE-STILL TESTING)
 Trapezoidal Rule (DONE-STILL TESTING)
-FindX (DONE)
+FindX (Broken)
 Solve (NOT WORKING-STILL TESTING)
 Graph
 Compare Error b/t Simpson's & Trapezoidal & original
@@ -64,6 +65,13 @@ def simpRule (function, dx, upbnd, lwbnd):
 	#deleted Function_Evaluation, moved to here
 	listy = list(function)
 
+	print (listy)
+
+	listy = joinDecimal(listy)
+
+	#TESTINGTESTING TESTING
+	print (listy)
+
 	theSum = 0
 	counter = 0
 	tempListy = []	
@@ -94,8 +102,10 @@ def trapRule (function, dx, upbnd, lwbnd):
 	#deleted Function_Evaluation, moved to here
 	listy = list(function)
 	
+	listy = joinDecimal(listy)
+
 	#TESTINGTESTINGTESTING
-	#print (listy)
+	print (listy)
 
 	theSum = 0
 	counter = 0
@@ -225,7 +235,64 @@ def Solve (listy3): #Find y
 
 #def greaterThan9 (listy4): #any numbers greater than 9, collapse together
 
+def joinDecimal (listy5): #find decimal points in original function and join
+	stillBehind = True
+	stillBefore = True
+	num = 0
+	while num < len(listy5):	
+		if listy5[num] == ".":
+			if num == 0:
+				while stillBehind: #numbers still unaccounted for behind decimal
+					behind = listy5[num + 1]
+					listy5[num] = listy5[num] + listy5[num + 1] #concat
+					listy5.pop(num + 1) #remove the item after concat
+					try: #Handling ValueError exception
+						if num == len(listy5):
+							stillBehind = False
+						elif float(listy5[num + 1]) >= 0.0 and float(listy5[num + 1]) <= 10.0:
+							pass #nothing happens
+						else:
+							stillBehind = False #stop looping
+					except ValueError:
+						stillBehind = False
+			elif num == len(listy5): #last element, no reason for decimal
+				listy5.pop(num) #just remove it
+			else: #somewhere in middle
+				while stillBefore:
+					before = listy5[num - 1]
+					listy5[num] = listy5[num - 1] + listy5[num] #concat
+					listy5.pop(num - 1)
+					num -= 1
 
+					#TESTINGTESTINGTESTING
+					print (listy5)
 
+					try: #Handling ValueError exception
+						if num == 0:
+							stillBefore = False
+						elif float(listy5[num - 1]) >= 0.0 and float(listy5[num - 1]) <= 10.0:
+							pass
+						else:
+							stillBefore = False
+					except ValueError:
+						stillBefore = False
+				while stillBehind:
+					behind = listy5[num + 1]
+					listy5[num] = listy5[num] + listy5[num + 1] #concat
+					listy5.pop(num + 1) #remove the item after concat
+					try: #Handling ValueError exception
+						if num == len(listy5):
+							stillBehind = False
+						elif float(listy5[num + 1]) >= 0 and float(listy5[num + 1]) <= 9:
+							pass #nothing happens
+						else:
+							stillBehind = False #stop looping
+					except ValueError:
+						stillBehind = False
+		num += 1
+		stillBehind = True
+		stillBefore = True
+	return listy5
+		
 simpRule(function, dx, upbnd, lwbnd)
 trapRule(function, dx, upbnd, lwbnd)
