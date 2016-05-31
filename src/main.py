@@ -23,6 +23,8 @@ This program will run two approximations for definite integrals:
 INPUT (DONE)
 Simpson's Rule (DONE-STILL TESTING)
 Trapezoidal Rule (DONE-STILL TESTING)
+GreaterThan9
+JoinDecimal (DONE)
 FindX (Broken)
 Solve (NOT WORKING-STILL TESTING)
 Graph
