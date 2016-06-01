@@ -22,8 +22,8 @@ This program will run two approximations for definite integrals:
 #CHECKLIST:
 '''
 INPUT (DONE)
-Simpson's Rule (DONE-STILL TESTING)
-Trapezoidal Rule (DONE-STILL TESTING)
+Simpson's Rule (DONE)
+Trapezoidal Rule (DONE)
 GreaterThan9 (WORKS)
 JoinDecimal (WORKS)
 FindX (Works for one x)
@@ -48,7 +48,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 import math
-#from sympy import integrals
+from sympy import *
 
 #INPUT
 print ("Integrates the following function in two ways.")
@@ -73,7 +73,7 @@ def trapRule (function, dx, upbnd, lwbnd):
 	listy = greaterThan9(listy)
 
 	#TESTINGTESTINGTESTING
-	print (listy)
+	#print (listy)
 
 	theSum = 0
 	counter = 0
@@ -88,14 +88,14 @@ def trapRule (function, dx, upbnd, lwbnd):
 		#print ("num " + str(num))
 		#DO NOT EVER CHANGE LISTY
 		listyKEEP = list(listy)
-		print (listyKEEP)
+		#print (listyKEEP)
 		#print ("LISTY ABOVE")
 		tempListy = FindX(listyKEEP, check[num]) #change the list, replace x with num
 		#TESTINGTESTINGTESTING
-		print (tempListy)
+		#print (tempListy)
 
 		y = Solve(tempListy) #parse the function and solve now we have dx
-		print ("y = " + str(y))
+		#print ("y = " + str(y))
 		if counter == 0 or counter == n:
 			theSum += y
 		else:
@@ -145,12 +145,13 @@ def simpRule (function, dx, upbnd, lwbnd):
 	print ("Simpson's Rule Sum: " + str(theSum))
 
 def FindX (listy2, xitdx) : #Change the x to given number, modified listy
-	print (str(xitdx))
+	#print (str(xitdx))
 	test = (xitdx)
 	leng = len(listy2)
-	for val in range(leng):
+	val = 0
+	while val < leng:
 		if listy2[val] == "x":
-			print (val)
+			#print (val)
 			if val == 0: #at beginning
 				if listy2[val + 1] == "+" or listy2[val + 1] == "-" or listy2[val + 1] == "^" or listy2[val + 1] == "*" or listy2[val + 1] == "/": 
 					listy2[val] = xitdx #Just replace with new value
@@ -170,6 +171,9 @@ def FindX (listy2, xitdx) : #Change the x to given number, modified listy
 					listy2[val + 1] = xitdx
 				except ValueError:
 					pass
+		print (listy2)
+		val += 1
+		leng = len(listy2)
 	return listy2
 
 def Solve (listy3): #Find y
@@ -300,4 +304,22 @@ def joinDecimal (listy5): #find decimal points in original function and join
 	return listy5
 		
 trapRule(function, dx, upbnd, lwbnd)
-simpRule(function, dx, upbnd, lwbnd)	
+simpRule(function, dx, upbnd, lwbnd)
+
+def integToString (function):
+	listy = list(function)
+	
+	listy = joinDecimal(listy)
+	listy = greaterThan9(listy)
+
+	stringy = ''.join(listy)
+	return stringy	
+
+def insertAst(theString):
+	return theString.replace('^', '**')
+
+stringy = integToString(function)
+stringy = insertAst(stringy)
+x = Symbol('x')
+I = integrate(32.51*x**3+0.41, (x, lwbnd, upbnd))
+print ("Actual: " + str(I))
