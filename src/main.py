@@ -26,8 +26,8 @@ Simpson's Rule (DONE-STILL TESTING)
 Trapezoidal Rule (DONE-STILL TESTING)
 GreaterThan9 (WORKS)
 JoinDecimal (WORKS)
-FindX (Broken)
-Solve (NOT WORKING-STILL TESTING)
+FindX (Works for one x)
+Solve (WORKS)
 Graph
 Compare Error b/t Simpson's & Trapezoidal & original
 '''
@@ -61,43 +61,6 @@ lwbnd = int(input(prompt4))
 prompt3 = ("Enter upperbound of integration: ")
 upbnd = int(input(prompt3))
 
-#Simpson's Rule
-def simpRule (function, dx, upbnd, lwbnd):
-	theRange = upbnd - lwbnd
-	n = theRange / dx
-	#deleted Function_Evaluation, moved to here
-	listy = list(function)
-
-	print (listy)
-	
-	listy = joinDecimal(listy)
-	listy = greaterThan9(listy)
-
-	#TESTINGTESTING TESTING
-	print (listy)
-
-	theSum = 0
-	counter = 0
-	tempListy = []	
-	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
-	check = check.tolist() #change to list
-	check.append(upbnd) #add high end
-	for num in range(len(check)):
-	    listyKEEP = list(listy)
-	    tempListy = FindX(listyKEEP, check[num]) #change the list, replace x with num
-	    y = Solve(tempListy) #parse the function and solve now we have dx	
-	    if counter == 0 or counter == n:
-	    	    theSum += y
-	    elif counter % 2 == 1:
-	 	    theSum += (4 * y) #multiply by 4
-	    else:
-		    theSum += (2 * y) #multiply by 2
-	    counter += 1
-	coeff = dx / 3
-	theSum *= coeff
-
-	print ("Simpson's Rule Sum: " + str(theSum))
-
 #Trapezoidal Rule
 def trapRule (function, dx, upbnd, lwbnd):
 	theRange = (upbnd - lwbnd)
@@ -125,16 +88,14 @@ def trapRule (function, dx, upbnd, lwbnd):
 		#print ("num " + str(num))
 		#DO NOT EVER CHANGE LISTY
 		listyKEEP = list(listy)
-		#print (listyKEEP)
+		print (listyKEEP)
 		#print ("LISTY ABOVE")
 		tempListy = FindX(listyKEEP, check[num]) #change the list, replace x with num
 		#TESTINGTESTINGTESTING
-		#print (listy)
-		#print ("-----")
-		#print (tempListy)
+		print (tempListy)
 
 		y = Solve(tempListy) #parse the function and solve now we have dx
-		#print ("y = " + str(y))
+		print ("y = " + str(y))
 		if counter == 0 or counter == n:
 			theSum += y
 		else:
@@ -145,13 +106,51 @@ def trapRule (function, dx, upbnd, lwbnd):
 	
 	print ("Trapezoidal Rule Sum: " + str(theSum))
 
+
+#Simpson's Rule
+def simpRule (function, dx, upbnd, lwbnd):
+	theRange = upbnd - lwbnd
+	n = theRange / dx
+	#deleted Function_Evaluation, moved to here
+	listy = list(function)
+
+	#print (listy)
+	
+	listy = joinDecimal(listy)
+	listy = greaterThan9(listy)
+
+	#TESTINGTESTING TESTING
+	#print (listy)
+
+	theSum = 0
+	counter = 0
+	tempListy = []	
+	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
+	check = check.tolist() #change to list
+	check.append(upbnd) #add high end
+	for num in range(len(check)):
+	    listyKEEP = list(listy)
+	    tempListy = FindX(listyKEEP, check[num]) #change the list, replace x with num
+	    y = Solve(tempListy) #parse the function and solve now we have dx	
+	    if counter == 0 or counter == n:
+	    	    theSum += y
+	    elif counter % 2 == 1:
+	 	    theSum += (4 * y) #multiply by 4
+	    else:
+		    theSum += (2 * y) #multiply by 2
+	    counter += 1
+	coeff = dx / 3
+	theSum *= coeff
+
+	print ("Simpson's Rule Sum: " + str(theSum))
+
 def FindX (listy2, xitdx) : #Change the x to given number, modified listy
-	#print (str(xitdx))
+	print (str(xitdx))
 	test = (xitdx)
 	leng = len(listy2)
 	for val in range(leng):
 		if listy2[val] == "x":
-			
+			print (val)
 			if val == 0: #at beginning
 				if listy2[val + 1] == "+" or listy2[val + 1] == "-" or listy2[val + 1] == "^" or listy2[val + 1] == "*" or listy2[val + 1] == "/": 
 					listy2[val] = xitdx #Just replace with new value
@@ -165,9 +164,12 @@ def FindX (listy2, xitdx) : #Change the x to given number, modified listy
 					listy2.insert(val, "*")
 					listy2[val + 1] = xitdx
 			else: #somewhere in the middle
-				if listy2[val - 1] == "0" or listy2[val - 1] == "1" or listy2[val - 1] == "2" or listy2[val - 1] == "3" or listy2[val - 1] == "4" or listy2[val - 1] == "5" or listy2[val - 1] == "6" or listy2[val - 1] == "7" or listy2[val - 1] == "8" or listy2[val - 1] == "9":
+				try:
+					float(listy2[val - 1]) # a num
 					listy2.insert(val, "*")
 					listy2[val + 1] = xitdx
+				except ValueError:
+					pass
 	return listy2
 
 def Solve (listy3): #Find y
@@ -270,8 +272,8 @@ def joinDecimal (listy5): #find decimal points in original function and join
 					num -= 1
 
 					#TESTINGTESTINGTESTING
-					print (listy5)
-					print (num)
+					#print (listy5)
+					#print (num)
 
 					if num == 0:
 						stillBefore = False
@@ -284,18 +286,18 @@ def joinDecimal (listy5): #find decimal points in original function and join
 					listy5[num] = listy5[num] + listy5[num + 1] #concat
 					listy5.pop(num + 1) #remove the item after concat
 
-					print (listy5)
-					print (num)
+					#print (listy5)
+					#print (num)
 
 					try: #Handling ValueError exception
 						float(listy5[num + 1])
 					except (ValueError, IndexError):
 						stillBehind = False
 		num += 1
-		print (num)
+		#print (num)
 		stillBehind = True
 		stillBefore = True
 	return listy5
 		
-simpRule(function, dx, upbnd, lwbnd)
 trapRule(function, dx, upbnd, lwbnd)
+simpRule(function, dx, upbnd, lwbnd)	
