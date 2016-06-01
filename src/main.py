@@ -4,6 +4,7 @@
 #found the index prob....also we need to change all my .equals to ==
 #Still need to add functions to fix decimal numbers and multi-digit numbers
 #need to fix for multiple x's in func
+#FIX check if float/int in joinDecimal and greaterthan9
 
 #INFO:
 '''
@@ -23,8 +24,8 @@ This program will run two approximations for definite integrals:
 INPUT (DONE)
 Simpson's Rule (DONE-STILL TESTING)
 Trapezoidal Rule (DONE-STILL TESTING)
-GreaterThan9
-JoinDecimal (DONE)
+GreaterThan9 (WORKS)
+JoinDecimal (WORKS)
 FindX (Broken)
 Solve (NOT WORKING-STILL TESTING)
 Graph
@@ -68,8 +69,9 @@ def simpRule (function, dx, upbnd, lwbnd):
 	listy = list(function)
 
 	print (listy)
-
+	
 	listy = joinDecimal(listy)
+	listy = greaterThan9(listy)
 
 	#TESTINGTESTING TESTING
 	print (listy)
@@ -105,6 +107,7 @@ def trapRule (function, dx, upbnd, lwbnd):
 	listy = list(function)
 	
 	listy = joinDecimal(listy)
+	listy = greaterThan9(listy)
 
 	#TESTINGTESTINGTESTING
 	print (listy)
@@ -235,63 +238,61 @@ def Solve (listy3): #Find y
 		part = 0
 	return sum
 
-#def greaterThan9 (listy4): #any numbers greater than 9, collapse together
+def greaterThan9 (listy4): #any numbers greater than 9, collapse together
+	stillBehind = True
+	num = 0
+	while num < len(listy4):
+		try:
+			float(listy4[num]) #check if number
+			stillBehind = True
+			while stillBehind:
+				try:
+					float(listy4[num + 1])
+					listy4[num] = listy4[num] + listy4[num + 1]
+					listy4.pop(num + 1)
+					
+				except (ValueError, IndexError):
+					stillBehind = False
+					num += 1
+		except ValueError:
+			num += 1
+	return listy4
 
 def joinDecimal (listy5): #find decimal points in original function and join
 	stillBehind = True
 	stillBefore = True
 	num = 0
 	while num < len(listy5):	
-		if listy5[num] == ".":
-			if num == 0:
-				while stillBehind: #numbers still unaccounted for behind decimal
-					behind = listy5[num + 1]
-					listy5[num] = listy5[num] + listy5[num + 1] #concat
-					listy5.pop(num + 1) #remove the item after concat
-					try: #Handling ValueError exception
-						if num == len(listy5):
-							stillBehind = False
-						elif float(listy5[num + 1]) >= 0.0 and float(listy5[num + 1]) <= 10.0:
-							pass #nothing happens
-						else:
-							stillBehind = False #stop looping
-					except ValueError:
-						stillBehind = False
-			elif num == len(listy5): #last element, no reason for decimal
-				listy5.pop(num) #just remove it
-			else: #somewhere in middle
+		if listy5[num] == ".": #There must be a 0 in front of decimal
 				while stillBefore:
-					before = listy5[num - 1]
 					listy5[num] = listy5[num - 1] + listy5[num] #concat
 					listy5.pop(num - 1)
 					num -= 1
 
 					#TESTINGTESTINGTESTING
 					print (listy5)
+					print (num)
+
+					if num == 0:
+						stillBefore = False
 
 					try: #Handling ValueError exception
-						if num == 0:
-							stillBefore = False
-						elif float(listy5[num - 1]) >= 0.0 and float(listy5[num - 1]) <= 10.0:
-							pass
-						else:
-							stillBefore = False
-					except ValueError:
+						float(listy5[num - 1])
+					except (ValueError):
 						stillBefore = False
 				while stillBehind:
-					behind = listy5[num + 1]
 					listy5[num] = listy5[num] + listy5[num + 1] #concat
 					listy5.pop(num + 1) #remove the item after concat
+
+					print (listy5)
+					print (num)
+
 					try: #Handling ValueError exception
-						if num == len(listy5):
-							stillBehind = False
-						elif float(listy5[num + 1]) >= 0 and float(listy5[num + 1]) <= 9:
-							pass #nothing happens
-						else:
-							stillBehind = False #stop looping
-					except ValueError:
+						float(listy5[num + 1])
+					except (ValueError, IndexError):
 						stillBehind = False
 		num += 1
+		print (num)
 		stillBehind = True
 		stillBefore = True
 	return listy5
