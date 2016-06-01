@@ -170,9 +170,9 @@ def FindX (listy2, xitdx) : #Change the x to given number, modified listy
 					listy2[val + 1] = xitdx
 				except ValueError:
 					pass
-		print (listy2)
+		#print (listy2)
 		val += 1
-		print (val)
+		#print (val)
 	return listy2
 
 def Solve (listy3): #Find y
@@ -320,7 +320,9 @@ def insertAst(theString):
 
 stringy = integToString(function)
 stringy = insertAst(stringy)
-ns["x"] = Symbol("x")
+
+ns = {}
+ns.update(dict(x=Symbol("x")))
 expr = sympify(stringy, locals=ns)
 I = integrate(expr, (x, lwbnd, upbnd))
 print ("Actual: " + str(I))
