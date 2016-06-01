@@ -26,7 +26,7 @@ Simpson's Rule (DONE)
 Trapezoidal Rule (DONE)
 GreaterThan9 (WORKS)
 JoinDecimal (WORKS)
-FindX (Works for one x)
+FindX (WORKS)
 Solve (WORKS)
 Graph
 Compare Error b/t Simpson's & Trapezoidal & original
@@ -49,6 +49,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 import math
 from sympy import *
+#from symbolDict import __init__ as ns
 
 #INPUT
 print ("Integrates the following function in two ways.")
@@ -146,10 +147,8 @@ def simpRule (function, dx, upbnd, lwbnd):
 
 def FindX (listy2, xitdx) : #Change the x to given number, modified listy
 	#print (str(xitdx))
-	test = (xitdx)
-	leng = len(listy2)
 	val = 0
-	while val < leng:
+	while val < len(listy2):
 		if listy2[val] == "x":
 			#print (val)
 			if val == 0: #at beginning
@@ -158,7 +157,7 @@ def FindX (listy2, xitdx) : #Change the x to given number, modified listy
 				else:
 					listy2.insert(val + 1, "*") #manually insert sign
 					listy2[val] = xitdx
-			elif val == leng: #at end
+			elif val == (len(listy2) - 1): #at end
 				if listy2[val - 1] == "+" or listy2[val - 1] == "-" or listy2[val - 1] == "^" or listy2[val - 1] == "*" or listy2[val - 1] == "/": 
 					listy2[val] = xitdx
 				else:
@@ -174,7 +173,6 @@ def FindX (listy2, xitdx) : #Change the x to given number, modified listy
 		print (listy2)
 		val += 1
 		print (val)
-		leng = len(listy2)
 	return listy2
 
 def Solve (listy3): #Find y
@@ -307,6 +305,7 @@ def joinDecimal (listy5): #find decimal points in original function and join
 trapRule(function, dx, upbnd, lwbnd)
 simpRule(function, dx, upbnd, lwbnd)
 
+
 def integToString (function):
 	listy = list(function)
 	
@@ -321,6 +320,8 @@ def insertAst(theString):
 
 stringy = integToString(function)
 stringy = insertAst(stringy)
-x = Symbol('x')
-I = integrate(32.51*x**3+0.41, (x, lwbnd, upbnd))
+ns["x"] = Symbol("x")
+expr = sympify(stringy, locals=ns)
+I = integrate(expr, (x, lwbnd, upbnd))
 print ("Actual: " + str(I))
+
