@@ -311,6 +311,7 @@ def integToString (function):
 	
 	listy = joinDecimal(listy)
 	listy = greaterThan9(listy)
+	listy = insertMult(listy)
 
 	stringy = ''.join(listy)
 	return stringy	
@@ -318,13 +319,37 @@ def integToString (function):
 def insertAst(theString):
 	return theString.replace('^', '**')
 
-def insertMult(theString):
-	return theString.replace('x', '*x')
+def insertMult(listy2): #modified FindX
+	val = 0
+	while val < len(listy2):
+		if listy2[val] == "x":
+			#print (val)
+			if val == 0: #at beginning
+				if listy2[val + 1] == "+" or listy2[val + 1] == "-" or listy2[val + 1] == "^" or listy2[val + 1] == "*" or listy2[val + 1] == "/": 
+					listy2[val] = "x" #Just replace with new value
+				else:
+					listy2.insert(val + 1, "*") #manually insert sign
+					listy2[val] = "x"
+			elif val == (len(listy2) - 1): #at end
+				if listy2[val - 1] == "+" or listy2[val - 1] == "-" or listy2[val - 1] == "^" or listy2[val - 1] == "*" or listy2[val - 1] == "/": 
+					listy2[val] = "x"
+				else:
+					listy2.insert(val, "*")
+					listy2[val + 1] = "x"
+			else: #somewhere in the middle
+				try:
+					float(listy2[val - 1]) # a num
+					listy2.insert(val, "*")
+					listy2[val + 1] = "x"
+				except ValueError:
+					pass
+		#print (listy2)
+		val += 1
+		#print (val)
+	return listy2
 
 stringy = integToString(function)
 stringy = insertAst(stringy)
-stringy = insertMult(stringy)
-
 x = Symbol("x")
 expr = S(stringy)
 
