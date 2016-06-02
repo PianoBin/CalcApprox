@@ -28,6 +28,7 @@ GreaterThan9 (WORKS)
 JoinDecimal (WORKS)
 FindX (WORKS)
 Solve (WORKS)
+Integrate(WORKS)
 Graph
 Compare Error b/t Simpson's & Trapezoidal & original
 '''
@@ -49,7 +50,6 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 import math
 from sympy import *
-#from symbolDict import __init__ as ns
 
 #INPUT
 print ("Integrates the following function in two ways.")
@@ -318,12 +318,16 @@ def integToString (function):
 def insertAst(theString):
 	return theString.replace('^', '**')
 
+def insertMult(theString):
+	return theString.replace('x', '*x')
+
 stringy = integToString(function)
 stringy = insertAst(stringy)
+stringy = insertMult(stringy)
 
-ns = {}
-ns.update(dict(x=Symbol("x")))
-expr = sympify(stringy, locals=ns)
+x = Symbol("x")
+expr = S(stringy)
+
 I = integrate(expr, (x, lwbnd, upbnd))
 print ("Actual: " + str(I))
 
