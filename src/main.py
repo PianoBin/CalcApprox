@@ -1,11 +1,3 @@
-#FYI, raw_input was renamed to input in Python 3. That's a conflict between our versions.
-#The current implementation of the for loop in trapezoidal and simpson's is incorrect, does not reflect formula. Will fix.
-#I think the problem is due to decimal points
-#found the index prob....also we need to change all my .equals to ==
-#Still need to add functions to fix decimal numbers and multi-digit numbers
-#need to fix for multiple x's in func
-#FIX check if float/int in joinDecimal and greaterthan9
-
 #INFO:
 '''
 This program will run two approximations for definite integrals:
@@ -52,7 +44,7 @@ import math
 from sympy import *
 
 #INPUT
-print ("Integrates the following function in two ways.")
+print ("Integrates the following function in two ways (Simpson's Rule + Trapezoidal Rule).")
 prompt1 = "Enter Function: "
 function = input(prompt1) #remain as String
 prompt2 = ("Enter dx: ")
@@ -84,6 +76,12 @@ def trapRule (function, dx, upbnd, lwbnd):
 	check.append(upbnd) #add high end num
 	#TESTINGTESTINGTESTING
 	#print (check)
+	
+	global ySumsTrap
+	ySumsTrap = []
+
+	
+	coeff = dx / 2
 
 	for num in range(len(check)):
 		#print ("num " + str(num))
@@ -102,10 +100,14 @@ def trapRule (function, dx, upbnd, lwbnd):
 		else:
 			theSum += (2 * y) #multiply by 2
 		counter += 1
-	coeff = dx / 2
+		
+		ySumsTrap.append(theSum * coeff)
+
 	theSum *= coeff
 	
 	print ("Trapezoidal Rule Sum: " + str(theSum))
+
+	return ySumsTrap
 
 
 #Simpson's Rule
@@ -129,6 +131,14 @@ def simpRule (function, dx, upbnd, lwbnd):
 	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
 	check = check.tolist() #change to list
 	check.append(upbnd) #add high end
+
+
+	global ySumsSimp
+	ySumsSimp = []
+
+	
+	coeff = dx / 3
+
 	for num in range(len(check)):
 	    listyKEEP = list(listy)
 	    tempListy = FindX(listyKEEP, check[num]) #change the list, replace x with num
@@ -140,10 +150,14 @@ def simpRule (function, dx, upbnd, lwbnd):
 	    else:
 		    theSum += (2 * y) #multiply by 2
 	    counter += 1
-	coeff = dx / 3
+
+	    ySumsSimp.append(theSum * coeff)
+
 	theSum *= coeff
 
 	print ("Simpson's Rule Sum: " + str(theSum))
+
+	return ySumsSimp
 
 def FindX (listy2, xitdx) : #Change the x to given number, modified listy
 	#print (str(xitdx))
@@ -302,10 +316,6 @@ def joinDecimal (listy5): #find decimal points in original function and join
 		stillBefore = True
 	return listy5
 		
-trapRule(function, dx, upbnd, lwbnd)
-simpRule(function, dx, upbnd, lwbnd)
-
-
 def integToString (function):
 	listy = list(function)
 	
@@ -348,11 +358,60 @@ def insertMult(listy2): #modified FindX
 		#print (val)
 	return listy2
 
+def actualList (expr, dx, lwbnd, upbnd):
+	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
+	check = check.tolist() #change to list
+	check.append(upbnd) #add high end
+
+	ySums = []
+
+	for num in range(len(check)):
+	    I = integrate(expr, (x, lwbnd, check[num]))	
+	    ySums.append(I)
+	
+	print ("Actual: " + str(I))
+
+	return ySums
+
+def xList(dx, lwbnd, upbnd):
+	check = np.arange(lwbnd, upbnd, dx) #Use numpy for step sizes
+	check = check.tolist() #change to list
+	check.append(upbnd) #add high end
+
+	return check
+
+def error(approx, actual):
+	errorList = []
+	for num in range(len(approx)):
+		errorList.append(abs(approx[num] - actual[num]))
+	return errorList
+
+def Graphing (x, y, color, x2, y2, color2):
+	plt.plot(y, x, color)
+	plt.plot(y2, x2, color2)
+	lengx = len(x)
+	lengy = len(y)
+	plt.title("Comparison between Trapezoidal rule error and Simpson's rule error")
+	plt.ylabel("Size of Error")
+	plt.xlabel("Interval Length")
+	plt.text(y[lengy - 5], 0, "Green Triangles from Trapezoidal, Blue Squares from Simpson's")
+	plt.show()
+
+#Start
+
+trapList = trapRule(function, dx, upbnd, lwbnd)
+simpList = simpRule(function, dx, upbnd, lwbnd)
+
 stringy = integToString(function)
 stringy = insertAst(stringy)
 x = Symbol("x")
 expr = S(stringy)
 
-I = integrate(expr, (x, lwbnd, upbnd))
-print ("Actual: " + str(I))
+actual = actualList(expr, dx, lwbnd, upbnd)
 
+xAxis = xList(dx, lwbnd, upbnd)
+
+trapError = error(trapList, actual)
+simpError = error(simpList, actual)
+
+Graphing(xAxis, trapError, 'g^', xAxis, simpError, 'bs')
