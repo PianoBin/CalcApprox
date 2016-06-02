@@ -21,8 +21,8 @@ JoinDecimal (WORKS)
 FindX (WORKS)
 Solve (WORKS)
 Integrate(WORKS)
-Graph
-Compare Error b/t Simpson's & Trapezoidal & original
+Graph (DONE)
+Compare Error b/t Simpson's & Trapezoidal & original (DONE)
 '''
 
 '''
