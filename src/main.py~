@@ -391,10 +391,10 @@ def Graphing (x, y, color, x2, y2, color2):
 	plt.plot(y2, x2, color2)
 	lengx = len(x)
 	lengy = len(y)
-	plt.title("Comparison between Trapezoidal rule error and Simpson's rule error")
+	plt.title("Comparison between Trapezoidal rule error and Simpson's rule error\nGreen Triangles from Trapezoidal, Blue Squares from Simpson's")
 	plt.ylabel("Size of Error")
 	plt.xlabel("Interval Length")
-	plt.text(y[lengy - 5], 0, "Green Triangles from Trapezoidal, Blue Squares from Simpson's")
+	#plt.text(y[lengy - 5], 0, "Green Triangles from Trapezoidal, Blue Squares from Simpson's")
 	plt.show()
 
 #Start
